@@ -51,13 +51,14 @@ export class AppService {
       const res = await firstValueFrom(
         this.httpService.post(url2, payload, { headers: this.headers }),
       );
-      if (!res.data.result.is_insect.binary) {
+      if (res.data.result.is_insect.probability <= 0.3) {
         throw new HttpException('This picture is not an insect', 400);
       }
       return res.data;
     } catch (error) {
-      console.error('Error fetching image info:', error.message);
-      throw new Error('Failed to fetch image info');
+      if (error instanceof HttpException) throw error;
+      console.error('Error fetching image info:', error.message || error);
+      throw new HttpException('Failed to fetch image info', 500);
     }
   }
 }
