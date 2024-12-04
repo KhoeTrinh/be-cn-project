@@ -116,6 +116,7 @@ export class AppService {
       if (!result) throw new HttpException('Error sending message', 400);
       return {
         data: JSON.parse(result.response.text()),
+        description: data.suggestion.details.description.value,
         url: data.suggestion.details.url,
         image: data.suggestion.details.image.value,
         images: data.suggestion.details.images.map(image => image.value)
