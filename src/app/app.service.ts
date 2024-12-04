@@ -18,7 +18,7 @@ export class AppService {
     private keyService: Key,
     private indexService: IndexService,
     private configService: ConfigService,
-  ) {}
+  ) { }
   async getImageInfo(data: ImageInfo) {
     if (!data) throw new HttpException('Invalid data', 400);
     try {
@@ -45,7 +45,7 @@ export class AppService {
       }
       const params = {
         details:
-          'common_names,url,taxonomy,rank,description,image,danger_description,role,inaturalist_id',
+          'common_names,url,taxonomy,rank,description,image,images,danger_description,role,inaturalist_id',
         language: 'en',
       };
       const url2 = `https://insect.kindwise.com/api/v1/identification?details=${params.details}&language=${params.language}`;
@@ -117,7 +117,8 @@ export class AppService {
       return {
         data: JSON.parse(result.response.text()),
         url: data.suggestion.details.url,
-        image: data.suggestion.details.image
+        image: data.suggestion.details.image.value,
+        images: data.suggestion.details.images.map(image => image.value)
       };
     } catch (error) {
       if (error instanceof HttpException) throw error;

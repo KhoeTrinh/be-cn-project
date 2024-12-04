@@ -77,6 +77,7 @@ export class ImageInfoDetails {
         license_url: string;
       };
       image: any;
+      images: Array<any>;
       role: any;
       danger_description: any;
       language: string;
