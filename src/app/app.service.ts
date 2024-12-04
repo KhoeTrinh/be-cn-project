@@ -68,7 +68,9 @@ export class AppService {
   }
 
   async getImageInfoDetails(data: ImageInfoDetails) {
-    if (!data) throw new HttpException('Invalid data', 400);
+    if (Object.keys(data.suggestion).length === 0) {
+      throw new HttpException('Reload successfully', 322);
+    }
     try {
       const gemini_key = this.configService.get('GEMINI_KEY');
       this.genAi = new GoogleGenerativeAI(gemini_key);
