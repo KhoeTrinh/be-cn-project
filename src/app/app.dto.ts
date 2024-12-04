@@ -1,3 +1,4 @@
+import { HttpException } from '@nestjs/common';
 import {
   ArrayNotEmpty,
   IsArray,
@@ -11,6 +12,7 @@ import {
 @ValidatorConstraint({ async: false })
 export class IsStrictBase64 implements ValidatorConstraintInterface {
   validate(value: string, args: ValidationArguments) {
+    if(!value) throw new HttpException('Invalid data', 400)
     const base64Data = this.stripBase64Prefix(value);
     const regex = /^[A-Za-z0-9+/=]+$/; // Basic base64 regex
     return regex.test(base64Data) && this.isValidBase64(base64Data);
@@ -21,6 +23,7 @@ export class IsStrictBase64 implements ValidatorConstraintInterface {
   }
 
   private stripBase64Prefix(value: string): string {
+    if(typeof value !== 'string') throw new HttpException('Invalid data', 400)
     const regex = /^data:image\/[a-zA-Z]*;base64,/;
     return value.replace(regex, '');
   }
@@ -73,7 +76,7 @@ export class ImageInfoDetails {
         license_name: string;
         license_url: string;
       };
-      images: any;
+      image: any;
       role: any;
       danger_description: any;
       language: string;

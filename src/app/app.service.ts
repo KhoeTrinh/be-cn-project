@@ -20,6 +20,7 @@ export class AppService {
     private configService: ConfigService,
   ) {}
   async getImageInfo(data: ImageInfo) {
+    if (!data) throw new HttpException('Invalid data', 400);
     try {
       this.index = await this.indexService.getIndex();
       this.api_key = this.keyService.Api_key_Array[this.index];
@@ -44,7 +45,7 @@ export class AppService {
       }
       const params = {
         details:
-          'common_names,url,taxonomy,rank,description,images,danger_description,role,inaturalist_id',
+          'common_names,url,taxonomy,rank,description,image,danger_description,role,inaturalist_id',
         language: 'en',
       };
       const url2 = `https://insect.kindwise.com/api/v1/identification?details=${params.details}&language=${params.language}`;
@@ -67,6 +68,7 @@ export class AppService {
   }
 
   async getImageInfoDetails(data: ImageInfoDetails) {
+    if (!data) throw new HttpException('Invalid data', 400);
     try {
       const gemini_key = this.configService.get('GEMINI_KEY');
       this.genAi = new GoogleGenerativeAI(gemini_key);
@@ -112,7 +114,11 @@ export class AppService {
         JSON.stringify(formattedData, null, 2),
       );
       if (!result) throw new HttpException('Error sending message', 400);
-      return JSON.parse(result.response.text());
+      return {
+        data: JSON.parse(result.response.text()),
+        url: data.suggestion.details.url,
+        image: data.suggestion.details.image
+      };
     } catch (error) {
       if (error instanceof HttpException) throw error;
       console.error('Error fetching image info:', error.message || error);
