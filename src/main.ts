@@ -31,20 +31,20 @@ async function bootstrap() {
     }
   }
 
-  function getRandomInterval() {
-    return Math.floor(Math.random() * (60000 - 30000 + 1)) + 30000; // 30s - 60s
-  }
+  // function getRandomInterval() {
+  //   return Math.floor(Math.random() * (60000 - 30000 + 1)) + 30000; // 30s - 60s
+  // }
 
-  // Hàm gọi lặp lại với khoảng thời gian ngẫu nhiên
-  function startReloading() {
-    setTimeout(async () => {
-      await reloadWebsite();
-      startReloading(); // Gọi lại chính nó sau khi hoàn thành
-    }, getRandomInterval());
-  }
+  // // Hàm gọi lặp lại với khoảng thời gian ngẫu nhiên
+  // function startReloading() {
+  //   setTimeout(async () => {
+  //     await reloadWebsite();
+  //     startReloading(); // Gọi lại chính nó sau khi hoàn thành
+  //   }, getRandomInterval());
+  // }
 
-  // Bắt đầu lần đầu tiên
-  startReloading();
+  // // Bắt đầu lần đầu tiên
+  // startReloading();
 }
 
 bootstrap();
