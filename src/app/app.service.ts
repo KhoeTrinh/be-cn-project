@@ -69,7 +69,7 @@ export class AppService {
 
   async getImageInfoDetails(data: ImageInfoDetails) {
     if (Object.keys(data.suggestion).length === 0) {
-      throw new HttpException('Reload successfully', 322);
+      throw new HttpException('Redirect', 302);
     }
     try {
       const gemini_key = this.configService.get('GEMINI_KEY');
