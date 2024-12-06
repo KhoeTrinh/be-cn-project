@@ -120,8 +120,8 @@ export class AppService {
         data: JSON.parse(result.response.text()),
         description: data.suggestion.details.description.value,
         url: data.suggestion.details.url,
-        image: data.suggestion.details.image.value,
-        images: data.suggestion.details.images.map(image => image.value)
+        image: data.suggestion.details.image?.value,
+        images: data.suggestion.details?.images?.map(image => image.value)
       };
     } catch (error) {
       if (error instanceof HttpException) throw error;
