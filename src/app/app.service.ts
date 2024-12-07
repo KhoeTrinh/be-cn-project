@@ -73,6 +73,7 @@ export class AppService {
     }
     try {
       const gemini_key = this.configService.get('GEMINI_KEY');
+      if(!gemini_key) throw new HttpException('Gemini key not found', 400)
       this.genAi = new GoogleGenerativeAI(gemini_key);
       const model = this.genAi.getGenerativeModel({
         model: 'gemini-1.5-flash',
