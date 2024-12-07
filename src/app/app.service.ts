@@ -63,12 +63,12 @@ export class AppService {
     } catch (error) {
       if (error instanceof HttpException) throw error;
       console.error('Error fetching image info:', error.message || error);
-      throw new HttpException('Failed to fetch image info', 500);
+      throw new HttpException('Failed to get image info', 500);
     }
   }
 
   async getImageInfoDetails(data: ImageInfoDetails) {
-    if (Object.keys(data.suggestion).length === 0) {
+    if (Object.keys(data.suggestion).length === 0) {// keep 247
       return "Success";
     }
     try {
@@ -119,12 +119,15 @@ export class AppService {
         url: data.suggestion.details.url,
         image: data.suggestion.details.image?.value,
         images: data.suggestion.details.images?.map(image => image.value),
-        role: data.suggestion.details.role
-      };
+        role: data.suggestion.details.role,
+        inaturalist_url: data.suggestion.details.inaturalist_id 
+          ? `https://www.inaturalist.org/taxa/${data.suggestion.details.inaturalist_id}-${data.suggestion.name.replace(/\s+/g, '-')}`
+          : null
+      };      
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      console.error('Error fetching image info:', error.message || error);
-      throw new HttpException('Failed to get info from Gemini', 500);
+      console.error('Error fetching image DETAILS:', error.message || error);
+      throw new HttpException('Failed to get image DETAILS', 500);
     }
   }
 }
