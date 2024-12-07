@@ -45,7 +45,7 @@ export class AppService {
       }
       const params = {
         details:
-          'common_names,url,taxonomy,rank,description,image,images,danger_description,role,inaturalist_id',
+          'common_names,url,taxonomy,rank,description,image,images,role,inaturalist_id',
         language: 'en',
       };
       const url2 = `https://insect.kindwise.com/api/v1/identification?details=${params.details}&language=${params.language}`;
@@ -95,19 +95,15 @@ export class AppService {
         generationConfig,
         history: [
           {
-            role: 'user',
+            role: "user",
             parts: [
-              {
-                text: 'You will be given ONLY an json infomation about an insect contain like following:\n"details": {\n"name": "Papilio troilus",\n"common_names": [\n"Spicebush swallowtail"\n],\n"taxonomy": {\n"class": "Insecta",\n"genus": "Papilio",\n"order": "Lepidoptera",\n"family": "Papilionidae",\n"phylum": "Arthropoda",\n"kingdom": "Animalia"\n},\n}\nYour task to provide more infomation in JSON contain following:\nLife Cycle (with appearance)(create multiple object in JSON)\nHost Plants()(array in JSON)\nRange (Location) (string in JSON)\nHarm for agriculture\nDetail about Effective Control Methods (for agriculture) (create multiple object in JSON)',
-              },
+              {text: "You will be given ONLY an json infomation about an insect contain like following:\n\"details\": {\n\"name\": \"Papilio troilus\",\n\"common_names\": [\n\"Spicebush swallowtail\"\n],\n\"taxonomy\": {\n\"class\": \"Insecta\",\n\"genus\": \"Papilio\",\n\"order\": \"Lepidoptera\",\n\"family\": \"Papilionidae\",\n\"phylum\": \"Arthropoda\",\n\"kingdom\": \"Animalia\"\n},\n}\nYour task to provide more infomation in JSON contain following:\nLife Cycle (with appearance)(create multiple object in JSON)\nHost Plants()(array in JSON)\nRange (Location) (string in JSON)\nHarm for agriculture(string in JSON)\nDetail about Effective Control Methods (for agriculture) (create multiple object in JSON)\ndanger_description(for hunam heatlh)(string in JSON)"},
             ],
           },
           {
-            role: 'model',
+            role: "model",
             parts: [
-              {
-                text: '```json\n{\n  "details": {\n    "name": "Papilio troilus",\n    "common_names": [\n      "Spicebush swallowtail"\n    ],\n    "taxonomy": {\n      "class": "Insecta",\n      "genus": "Papilio",\n      "order": "Lepidoptera",\n      "family": "Papilionidae",\n      "phylum": "Arthropoda",\n      "kingdom": "Animalia"\n    },\n    "life_cycle": [\n      {\n        "stage": "Egg",\n        "appearance": "Small, pale yellow or greenish, roundish eggs laid singly on host plant leaves."\n      },\n      {\n        "stage": "Larva (Caterpillar)",\n        "appearance": "Initially dark brown, later developing bright green with eye-like markings and a saddle-like area.  May have reddish-orange markings."\n      },\n      {\n        "stage": "Pupa (Chrysalis)",\n        "appearance": "Brownish-green, with a textured surface, hanging from a twig or underside of a leaf."\n      },\n      {\n        "stage": "Adult (Butterfly)",\n        "appearance": "Black wings with iridescent blue and yellow markings.  Males typically have broader blue markings on their hindwings compared to females."\n      }\n    ],\n    "host_plants": [\n      "Spicebush (Lindera benzoin)",\n      "Sassafras (Sassafras albidum)",\n      "Redbay (Persea borbonia)",\n      "Camphor tree (Cinnamomum camphora)"\n    ],\n    "range": "Eastern North America, from southern Canada to Florida and Texas.",\n    "harm_to_agriculture": "Generally considered to have minimal impact on agriculture, as host plants are typically not major cultivated crops. However, high populations could potentially damage spicebush or sassafras saplings in nurseries or reforestation projects.",\n    "effective_control_methods": [\n      {\n        "method": "Handpicking",\n        "description": "Manually removing larvae and pupae from plants.  Effective for small infestations."\n      },\n      {\n        "method": "Biological Control",\n        "description": "Introduction of natural predators like parasitic wasps or other insects that prey on swallowtail caterpillars.  This is often the most environmentally friendly approach."\n      },\n      {\n        "method": "Bacillus thuringiensis (Bt)",\n        "description": "Application of Bt, a naturally occurring bacterium that produces toxins lethal to many caterpillars, including swallowtails.  Use with caution and according to label instructions."\n      },\n      {\n        "method": "Insecticidal Soap",\n        "description": "An organic pesticide that disrupts the cell membranes of insects, leading to their death. Effective against small larvae."\n      }\n\n    ]\n  }\n}\n```\n',
-              },
+              {text: "```json\n{\n  \"details\": {\n    \"name\": \"Papilio troilus\",\n    \"common_names\": [\n      \"Spicebush swallowtail\"\n    ],\n    \"taxonomy\": {\n      \"class\": \"Insecta\",\n      \"genus\": \"Papilio\",\n      \"order\": \"Lepidoptera\",\n      \"family\": \"Papilionidae\",\n      \"phylum\": \"Arthropoda\",\n      \"kingdom\": \"Animalia\"\n    },\n    \"life_cycle\": [\n      {\n        \"stage\": \"Egg\",\n        \"appearance\": \"Small, round, pale yellow or greenish eggs laid singly on host plant leaves.\"\n      },\n      {\n        \"stage\": \"Larva (Caterpillar)\",\n        \"appearance\": \"Initially dark brown; later develops a green body with a saddle-like marking and yellow/orange eyespots.\"\n      },\n      {\n        \"stage\": \"Pupa (Chrysalis)\",\n        \"appearance\": \"Brownish-green chrysalis, often found attached to twigs or leaves, with a cryptic coloration that allows for camouflage.\"\n      },\n      {\n        \"stage\": \"Adult (Butterfly)\",\n        \"appearance\": \"Large butterfly with black wings, accented with iridescent blue and yellow markings.  Males have a wider blue area than females.\"\n      }\n    ],\n    \"host_plants\": [\n      \"Spicebush (Lindera benzoin)\",\n      \"Sassafras (Sassafras albidum)\",\n      \"Redbay (Persea borbonia)\"\n    ],\n    \"range\": \"Eastern North America, from southern Canada to Florida and Texas.\",\n    \"harm_for_agriculture\": \"Generally considered non-harmful to agriculture; the larval stage may consume leaves of host plants, but rarely in quantities significant enough to cause economic damage.\",\n    \"effective_control_methods\": [\n      {\n        \"method\": \"Natural Predators\",\n        \"description\": \"Many parasitoids and predators naturally control populations, reducing the need for intervention.\"\n      },\n      {\n        \"method\": \"Handpicking\",\n        \"description\": \"Larvae can be manually removed from host plants in small gardens or nurseries.\"\n      },\n      {\n        \"method\": \"Bacillus thuringiensis (Bt)\",\n        \"description\": \"In cases of significant infestation, a Bt-based insecticide can be employed but is generally not necessary.\"\n      }\n    ],\n    \"danger_description\": \"Spicebush swallowtails pose no direct danger to human health.  They are not venomous or aggressive.  Contact with their larvae might cause mild skin irritation in sensitive individuals, similar to other caterpillars.\"\n  }\n}\n```\n"},
             ],
           },
         ],
@@ -121,7 +117,8 @@ export class AppService {
         description: data.suggestion.details.description.value,
         url: data.suggestion.details.url,
         image: data.suggestion.details.image?.value,
-        images: data.suggestion.details?.images?.map(image => image.value)
+        images: data.suggestion.details?.images?.map(image => image.value),
+        role: data.suggestion.details?.role
       };
     } catch (error) {
       if (error instanceof HttpException) throw error;
