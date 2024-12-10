@@ -18,7 +18,7 @@ export class AppService {
     private keyService: Key,
     private indexService: IndexService,
     private configService: ConfigService,
-  ) { }
+  ) {}
   async getImageInfo(data: ImageInfo) {
     if (!data) throw new HttpException('Invalid data', 400);
     try {
@@ -68,12 +68,13 @@ export class AppService {
   }
 
   async getImageInfoDetails(data: ImageInfoDetails) {
-    if (Object.keys(data.suggestion).length === 0) {// keep 247
-      return "Success";
+    if (Object.keys(data.suggestion).length === 0) {
+      // keep 247
+      return 'Success';
     }
     try {
       const gemini_key = this.configService.get('GEMINI_KEY');
-      if(!gemini_key) throw new HttpException('Gemini key not found', 400)
+      if (!gemini_key) throw new HttpException('Gemini key not found', 400);
       this.genAi = new GoogleGenerativeAI(gemini_key);
       const model = this.genAi.getGenerativeModel({
         model: 'gemini-1.5-flash',
@@ -96,15 +97,19 @@ export class AppService {
         generationConfig,
         history: [
           {
-            role: "user",
+            role: 'user',
             parts: [
-              {text: "You will be given ONLY an json infomation about an insect contain like following:\n\"details\": {\n\"name\": \"Papilio troilus\",\n\"common_names\": [\n\"Spicebush swallowtail\"\n],\n\"taxonomy\": {\n\"class\": \"Insecta\",\n\"genus\": \"Papilio\",\n\"order\": \"Lepidoptera\",\n\"family\": \"Papilionidae\",\n\"phylum\": \"Arthropoda\",\n\"kingdom\": \"Animalia\"\n},\n}\nYour task to provide more infomation in JSON contain following:\nLife Cycle (with appearance)(create multiple object in JSON)\nHost Plants()(array in JSON)\nRange (Location) (string in JSON)\nHarm for agriculture(string in JSON)\nDetail about Effective Control Methods (for agriculture) (create multiple object in JSON)\ndanger_description(for hunam heatlh)(string in JSON)"},
+              {
+                text: 'You will be given ONLY an json infomation about an insect contain like following:\n"details": {\n"name": "Papilio troilus",\n"common_names": [\n"Spicebush swallowtail"\n],\n"taxonomy": {\n"class": "Insecta",\n"genus": "Papilio",\n"order": "Lepidoptera",\n"family": "Papilionidae",\n"phylum": "Arthropoda",\n"kingdom": "Animalia"\n},\n}\nYour task to provide more infomation in JSON contain following:\nLife Cycle (with appearance)(create multiple object in JSON)\nHost Plants()(array in JSON)\nRange (Location) (string in JSON)\nHarm for agriculture(string in JSON)\nDetail about Effective Control Methods (for agriculture) (create multiple object in JSON)\ndanger_description(for hunam heatlh)(string in JSON)',
+              },
             ],
           },
           {
-            role: "model",
+            role: 'model',
             parts: [
-              {text: "```json\n{\n  \"details\": {\n    \"name\": \"Papilio troilus\",\n    \"common_names\": [\n      \"Spicebush swallowtail\"\n    ],\n    \"taxonomy\": {\n      \"class\": \"Insecta\",\n      \"genus\": \"Papilio\",\n      \"order\": \"Lepidoptera\",\n      \"family\": \"Papilionidae\",\n      \"phylum\": \"Arthropoda\",\n      \"kingdom\": \"Animalia\"\n    },\n    \"life_cycle\": [\n      {\n        \"stage\": \"Egg\",\n        \"appearance\": \"Small, round, pale yellow or greenish eggs laid singly on host plant leaves.\"\n      },\n      {\n        \"stage\": \"Larva (Caterpillar)\",\n        \"appearance\": \"Initially dark brown; later develops a green body with a saddle-like marking and yellow/orange eyespots.\"\n      },\n      {\n        \"stage\": \"Pupa (Chrysalis)\",\n        \"appearance\": \"Brownish-green chrysalis, often found attached to twigs or leaves, with a cryptic coloration that allows for camouflage.\"\n      },\n      {\n        \"stage\": \"Adult (Butterfly)\",\n        \"appearance\": \"Large butterfly with black wings, accented with iridescent blue and yellow markings.  Males have a wider blue area than females.\"\n      }\n    ],\n    \"host_plants\": [\n      \"Spicebush (Lindera benzoin)\",\n      \"Sassafras (Sassafras albidum)\",\n      \"Redbay (Persea borbonia)\"\n    ],\n    \"range\": \"Eastern North America, from southern Canada to Florida and Texas.\",\n    \"harm_for_agriculture\": \"Generally considered non-harmful to agriculture; the larval stage may consume leaves of host plants, but rarely in quantities significant enough to cause economic damage.\",\n    \"effective_control_methods\": [\n      {\n        \"method\": \"Natural Predators\",\n        \"description\": \"Many parasitoids and predators naturally control populations, reducing the need for intervention.\"\n      },\n      {\n        \"method\": \"Handpicking\",\n        \"description\": \"Larvae can be manually removed from host plants in small gardens or nurseries.\"\n      },\n      {\n        \"method\": \"Bacillus thuringiensis (Bt)\",\n        \"description\": \"In cases of significant infestation, a Bt-based insecticide can be employed but is generally not necessary.\"\n      }\n    ],\n    \"danger_description\": \"Spicebush swallowtails pose no direct danger to human health.  They are not venomous or aggressive.  Contact with their larvae might cause mild skin irritation in sensitive individuals, similar to other caterpillars.\"\n  }\n}\n```\n"},
+              {
+                text: '```json\n{\n  "details": {\n    "name": "Papilio troilus",\n    "common_names": [\n      "Spicebush swallowtail"\n    ],\n    "taxonomy": {\n      "class": "Insecta",\n      "genus": "Papilio",\n      "order": "Lepidoptera",\n      "family": "Papilionidae",\n      "phylum": "Arthropoda",\n      "kingdom": "Animalia"\n    },\n    "life_cycle": [\n      {\n        "stage": "Egg",\n        "appearance": "Small, round, pale yellow or greenish eggs laid singly on host plant leaves."\n      },\n      {\n        "stage": "Larva (Caterpillar)",\n        "appearance": "Initially dark brown; later develops a green body with a saddle-like marking and yellow/orange eyespots."\n      },\n      {\n        "stage": "Pupa (Chrysalis)",\n        "appearance": "Brownish-green chrysalis, often found attached to twigs or leaves, with a cryptic coloration that allows for camouflage."\n      },\n      {\n        "stage": "Adult (Butterfly)",\n        "appearance": "Large butterfly with black wings, accented with iridescent blue and yellow markings.  Males have a wider blue area than females."\n      }\n    ],\n    "host_plants": [\n      "Spicebush (Lindera benzoin)",\n      "Sassafras (Sassafras albidum)",\n      "Redbay (Persea borbonia)"\n    ],\n    "range": "Eastern North America, from southern Canada to Florida and Texas.",\n    "harm_for_agriculture": "Generally considered non-harmful to agriculture; the larval stage may consume leaves of host plants, but rarely in quantities significant enough to cause economic damage.",\n    "effective_control_methods": [\n      {\n        "method": "Natural Predators",\n        "description": "Many parasitoids and predators naturally control populations, reducing the need for intervention."\n      },\n      {\n        "method": "Handpicking",\n        "description": "Larvae can be manually removed from host plants in small gardens or nurseries."\n      },\n      {\n        "method": "Bacillus thuringiensis (Bt)",\n        "description": "In cases of significant infestation, a Bt-based insecticide can be employed but is generally not necessary."\n      }\n    ],\n    "danger_description": "Spicebush swallowtails pose no direct danger to human health.  They are not venomous or aggressive.  Contact with their larvae might cause mild skin irritation in sensitive individuals, similar to other caterpillars."\n  }\n}\n```\n',
+              },
             ],
           },
         ],
@@ -118,12 +123,13 @@ export class AppService {
         description: data.suggestion.details.description?.value,
         url: data.suggestion.details.url,
         image: data.suggestion.details.image?.value,
-        images: data.suggestion.details.images?.map(image => image.value),
+        images: data.suggestion.details.images?.map((image) => image.value),
         role: data.suggestion.details.role,
-        inaturalist_url: data.suggestion.details.inaturalist_id 
+        inaturalist_url: data.suggestion.details.inaturalist_id
           ? `https://www.inaturalist.org/taxa/${data.suggestion.details.inaturalist_id}-${data.suggestion.name.replace(/\s+/g, '-')}`
-          : null
-      };      
+          : null,
+        id: data.suggestion.id,
+      };
     } catch (error) {
       if (error instanceof HttpException) throw error;
       console.error('Error fetching image DETAILS:', error.message || error);
