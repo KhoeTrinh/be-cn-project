@@ -85,3 +85,7 @@ export class ImageInfoDetails {
     };
   };
 }
+export class keeponline{
+  @IsNotEmpty()
+  token: string
+}

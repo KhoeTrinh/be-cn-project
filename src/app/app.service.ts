@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { Key } from './app.collection';
 import { IndexService } from 'src/index/index.service';
-import { ImageInfo, ImageInfoDetails } from './app.dto';
+import { ImageInfo, ImageInfoDetails, keeponline } from './app.dto';
 import { firstValueFrom } from 'rxjs';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { ConfigService } from '@nestjs/config';
@@ -68,10 +68,6 @@ export class AppService {
   }
 
   async getImageInfoDetails(data: ImageInfoDetails) {
-    if (Object.keys(data.suggestion).length === 0) {
-      // keep 247
-      return 'Success';
-    }
     try {
       const gemini_key = this.configService.get('GEMINI_KEY');
       if (!gemini_key) throw new HttpException('Gemini key not found', 400);
@@ -135,5 +131,12 @@ export class AppService {
       console.error('Error fetching image DETAILS:', error.message || error);
       throw new HttpException('Failed to get image DETAILS', 500);
     }
+  }
+  async keeponline(data: keeponline){
+    if (data.token === "NaMCaIDiEuSiEuToTeaMKOL") {
+      // keep 247
+      return 'Success';
+    }
+    throw new HttpException('Invalid', 500);
   }
 }
