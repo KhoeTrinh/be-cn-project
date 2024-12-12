@@ -56,9 +56,6 @@ export class AppService {
       const res = await firstValueFrom(
         this.httpService.post(url2, payload, { headers: this.headers }),
       );
-      if (res.data.result.is_insect.probability <= 0.3) {
-        throw new HttpException('This picture is not an insect', 400);
-      }
       return res.data;
     } catch (error) {
       if (error instanceof HttpException) throw error;
@@ -132,8 +129,8 @@ export class AppService {
       throw new HttpException('Failed to get image DETAILS', 500);
     }
   }
-  async keeponline(data: keeponline){
-    if (data.token === "NaMCaIDiEuSiEuToTeaMKOL") {
+  async keeponline(data: keeponline) {
+    if (data.token === 'NaMCaIDiEuSiEuToTeaMKOL') {
       // keep 247
       return 'Success';
     }
